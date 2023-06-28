@@ -1,0 +1,10 @@
+.delBtn{
+    background-color:rgb(153, 1, 1);
+    border-radius: 3px;
+    border:none;
+    cursor: pointer;
+}
+.delBtn:active{
+    color:white;
+}
+
