@@ -39,7 +39,7 @@ async function DataTable(config) {
   postPut.appendChild(postInputTh);
   postPut.appendChild(postBtn);
   parentObj.tr.appendChild(postPut);
-  
+
   Object.entries(dataArray.data).map(([key, item], index) => {
     const tr = document.createElement('tr');
     const td1 = document.createElement('td');
@@ -58,7 +58,7 @@ async function DataTable(config) {
       }
       tr.appendChild(td);
     });
-
+    console.log(dataArray.data.td1);
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Видалити';
 
@@ -94,12 +94,12 @@ async function DataTable(config) {
     const tdInput1 = document.createElement('td');
     const tdInput2 = document.createElement('td');
     const tdInput3 = document.createElement('td');
-
+    
+    tdIndex.innerHTML=dataArray.data.td1+1;
     const postInput1 = document.createElement('input');
     const postInput2 = document.createElement('input');
     const postInput3 = document.createElement('input');
 
-    tdIndex.innerHTML = dataArray.data.index+1;
     tdInput1.appendChild(postInput1);
     tdInput2.appendChild(postInput2);
     tdInput3.appendChild(postInput3);
@@ -111,81 +111,65 @@ async function DataTable(config) {
 
     parentObj.tbody.insertBefore(tr, parentObj.tbody.firstChild);
 
-    try {
-      const postResponse = await fetch(parentObj.api, { method: 'POST' });
-      if (postResponse.ok) {
-        postInput3.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') {
-            const newRecord = {
-              name: postInput1.value,
-              surname: postInput2.value,
-              birthday: postInput3.value,
-            };
+    postInput3.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const newRecord = {
+          name: postInput1.value,
+          surname: postInput2.value,
+          birthday: postInput3.value,
+        };
 
-            addRecordToTable(newRecord, tr);
-          }
-        });
-      } else {
-        postInput3.addEventListener('keydown', (event) => {
-          if(postInput3==undefined){
-            postInput3.value
-          }
-          if (event.key === 'Enter') {
-            const newRecord = {
-              name: postInput1.value,
-              surname: postInput2.value,
-              birthday: postInput3.value,
-            };
+        if (postInput1.value === '' || postInput2.value === '' || postInput3.value === '') {
+          postInput1.style.border = postInput1.value === '' ? '1px solid red' : '';
+          postInput2.style.border = postInput2.value === '' ? '1px solid red' : '';
+          postInput3.style.border = postInput3.value === '' ? '1px solid red' : '';
+        } else {
+          addRecordToTable(newRecord, tr);
+          tdInput1.remove();
+          tdInput2.remove();
+          tdInput3.remove();
 
-            addRecordToTable(newRecord, tr);
+          const tdButton = document.createElement('td');
+          const deleteButton = document.createElement('button');
+          deleteButton.classList.add('delBtn');
+          deleteButton.innerHTML = 'Видалити';
+          tdButton.appendChild(deleteButton);
+          tr.appendChild(tdButton);
+          for (const key of Object.keys(dataArray.data)) {
+            deleteButton.addEventListener('click', async () => {
+              try {
+                const deleteResponse = await fetch(`${parentObj.api}/${key}`, {
+                  method: 'DELETE',
+                });
 
-            tdInput1.remove();
-            tdInput2.remove();
-            tdInput3.remove();
-
-            const tdButton = document.createElement('td');
-            const deleteButton = document.createElement('button');
-            deleteButton.classList.add('delBtn');
-            deleteButton.innerHTML = 'Видалити';
-            tdButton.appendChild(deleteButton);
-            tr.appendChild(tdButton);
-            for (const key of Object.keys(dataArray.data)) {
-              deleteButton.addEventListener('click', async () => {
-                try {
-                  const deleteResponse = await fetch(`${parentObj.api}/${key}`, {
-                    method: 'DELETE',
-                  });
-
-                  if (deleteResponse.ok) {
-                    tr.remove();
-                  } else {
-                    throw new Error('Delete request failed');
-                  }
-                } catch (error) {
-                  console.error(error);
+                if (deleteResponse.ok) {
+                  tr.remove();
+                } else {
+                  throw new Error('Delete request failed');
                 }
-              });
-            }
+              } catch (error) {
+                console.error(error);
+              }
+            });
           }
-        });
+        }
+      } else {
+        postInput1.style.border = '';
+        postInput2.style.border = '';
+        postInput3.style.border = '';
       }
-    } catch (error) {
-      console.error(error);
-    }
+    });
   });
 
   function addRecordToTable(record, tr) {
-    //const tdIndex = document.createElement('td');
     const tdInput1 = document.createElement('td');
     const tdInput2 = document.createElement('td');
     const tdInput3 = document.createElement('td');
 
-  //  tdIndex.innerHTML = dataArray.data.index;
     tdInput1.innerHTML = record.name;
     tdInput2.innerHTML = record.surname;
     tdInput3.innerHTML = record.birthday;
 
-   // tr.appendChild(tdIndex);
     tr.appendChild(tdInput1);
     tr.appendChild(tdInput2);
     tr.appendChild(tdInput3);
@@ -207,6 +191,35 @@ const config1 = {
 };
 
 DataTable(config1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
