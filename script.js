@@ -1,5 +1,6 @@
 async function DataTable(config) {
   const parent = document.querySelector(config.parent);
+  let counter=1;
   const parentObj = {
     parent: parent,
     columns: config.columns,
@@ -33,6 +34,7 @@ async function DataTable(config) {
   parentObj.tr.appendChild(actions);
 
   const postBtn = document.createElement('button');
+  postBtn.classList.add('postBtn')
   const postPut = document.createElement('th');
   postBtn.innerHTML = 'Додати';
   const postInputTh = document.createElement('input');
@@ -40,10 +42,10 @@ async function DataTable(config) {
   postPut.appendChild(postBtn);
   parentObj.tr.appendChild(postPut);
 
-  Object.entries(dataArray.data).map(([key, item], index) => {
+  Object.entries(dataArray.data).map(([key, item]) => {
     const tr = document.createElement('tr');
     const td1 = document.createElement('td');
-    td1.innerHTML = index + 1;
+    td1.innerHTML = counter++
     tr.appendChild(td1);
 
     parentObj.columns.map((column) => {
@@ -58,7 +60,6 @@ async function DataTable(config) {
       }
       tr.appendChild(td);
     });
-    console.log(dataArray.data.td1);
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Видалити';
 
@@ -68,7 +69,6 @@ async function DataTable(config) {
 
     parentObj.tbody.appendChild(tr);
 
-    // Add event listener to delete button
     deleteButton.classList.add('delBtn');
     deleteButton.addEventListener('click', async () => {
       try {
@@ -77,7 +77,7 @@ async function DataTable(config) {
         });
 
         if (deleteResponse.ok) {
-          tr.remove();
+          tr.style.display="none";
         } else {
           throw new Error('Delete request failed');
         }
@@ -85,17 +85,17 @@ async function DataTable(config) {
         console.error(error);
       }
     });
+    
+    
   });
-
   postBtn.addEventListener('click', async () => {
     const tr = document.createElement('tr');
-
     const tdIndex = document.createElement('td');
     const tdInput1 = document.createElement('td');
     const tdInput2 = document.createElement('td');
     const tdInput3 = document.createElement('td');
     
-    tdIndex.innerHTML=dataArray.data.td1+1;
+    tdIndex.innerHTML=counter++
     const postInput1 = document.createElement('input');
     const postInput2 = document.createElement('input');
     const postInput3 = document.createElement('input');
@@ -112,6 +112,7 @@ async function DataTable(config) {
     parentObj.tbody.insertBefore(tr, parentObj.tbody.firstChild);
 
     postInput3.addEventListener('keydown', (event) => {
+      counter++;
       if (event.key === 'Enter') {
         const newRecord = {
           name: postInput1.value,
@@ -125,9 +126,9 @@ async function DataTable(config) {
           postInput3.style.border = postInput3.value === '' ? '1px solid red' : '';
         } else {
           addRecordToTable(newRecord, tr);
-          tdInput1.remove();
-          tdInput2.remove();
-          tdInput3.remove();
+          tdInput1.style.display="none";
+          tdInput2.style.display="none";
+          tdInput3.style.display="none";
 
           const tdButton = document.createElement('td');
           const deleteButton = document.createElement('button');
@@ -143,7 +144,7 @@ async function DataTable(config) {
                 });
 
                 if (deleteResponse.ok) {
-                  tr.remove();
+                  tr.style.display='none';
                 } else {
                   throw new Error('Delete request failed');
                 }
@@ -151,6 +152,7 @@ async function DataTable(config) {
                 console.error(error);
               }
             });
+          
           }
         }
       } else {
@@ -160,7 +162,7 @@ async function DataTable(config) {
       }
     });
   });
-
+  
   function addRecordToTable(record, tr) {
     const tdInput1 = document.createElement('td');
     const tdInput2 = document.createElement('td');
@@ -174,10 +176,9 @@ async function DataTable(config) {
     tr.appendChild(tdInput2);
     tr.appendChild(tdInput3);
   }
-
   parentObj.table.appendChild(parentObj.tbody);
   parentObj.parent.appendChild(parentObj.table);
-  console.log(dataArray);
+  
 }
 
 const config1 = {
@@ -187,7 +188,7 @@ const config1 = {
     { title: 'Прізвище', value: 'surname' },
     { title: 'Вік', value: 'birthday' },
   ],
-  apiUrl: 'https://mock-api.shpp.me/marliiv/users', // замініть nsurname на своє ім'я та прізвище
+  apiUrl: 'https://mock-api.shpp.me/maliiv/users', // замініть nsurname на своє ім'я та прізвище
 };
 
 DataTable(config1);

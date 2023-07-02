@@ -1,10 +1,36 @@
 .delBtn{
     background-color:rgb(153, 1, 1);
     border-radius: 3px;
-    border:none;
+    border:collapse;
     cursor: pointer;
+    width: 100%;
+    font-family: Arial, sans-serif;
 }
+.postBtn{
+    color: white;
+    background-color: #333;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  table td {
+    background-color: #f2f2f2;
+  }
+
 .delBtn:active{
     color:white;
 }
-
