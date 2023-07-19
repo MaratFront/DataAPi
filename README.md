@@ -1,2 +1,2 @@
-# DataAPi
-https://maratfront.github.io/DataAPi/ 
+#DataAPi
+https://maratfront.github.io/DataAPi/
