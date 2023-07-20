@@ -165,6 +165,7 @@
         const tdInput2 = document.createElement('td');
         const tdInput3 = document.createElement('td');
 
+<<<<<<< HEAD
         tdInput1.innerHTML = record.name;
         tdInput2.innerHTML = record.surname;
         tdInput3.innerHTML = record.birthday;
@@ -214,6 +215,8 @@
 
 
 
+=======
+>>>>>>> 5c50c3f0c5af822feedeb5785e83ab4d7f62a076
 
 
 
