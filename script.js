@@ -41,8 +41,7 @@ async function DataTable(config) {
   postPut.appendChild(postInputTh);
   postPut.appendChild(postBtn);
   parentObj.tr.appendChild(postPut);
-  let td1 = document.createElement('td');
-  td1.classList.add('row');
+  console.log(dataArray);
   Object.entries(dataArray.data).map(([key, item]) => {
     const tr = document.createElement('tr');
     const td1 = document.createElement('td');
@@ -124,25 +123,27 @@ async function DataTable(config) {
     tr.appendChild(tdInput1);
     tr.appendChild(tdInput2);
     tr.appendChild(tdInput3);
-
     parentObj.tbody.insertBefore(tr, parentObj.tbody.firstChild);
-    updateRowNumbers();
-    postInput3.addEventListener('keydown', async (event) => {
-     // const newData = parentObj.api; // This should be the correct endpoint for creating new records
+   
+    
+    
 
+    postInput3.addEventListener('keydown', async (event) => {
       try {
         if (event.key === 'Enter') {
           const newRecord = {
             name: postInput1.value,
             surname: postInput2.value,
             birthday: postInput3.value,
-          };
-
+            avatar: 'https://example.com/default_avatar.jpg'
+          }
+          updateRowNumbers();
           if (postInput1.value === '' || postInput2.value === '' || postInput3.value === '') {
             postInput1.style.border = postInput1.value === '' ? '1px solid red' : '';
             postInput2.style.border = postInput2.value === '' ? '1px solid red' : '';
             postInput3.style.border = postInput3.value === '' ? '1px solid red' : '';
           } else {
+            
             const postResponse = await fetch(parentObj.api, {
               method: 'POST',
               body: JSON.stringify(newRecord), 
@@ -150,11 +151,11 @@ async function DataTable(config) {
                 'Content-Type': 'application/json',
               },
             });
-
             if (postResponse.ok) {
               // Assuming the response contains the newly created record data, you can update the table with it
               const responseData = await postResponse.json();
               addRecordToTable(responseData, tr);
+              
 
               // Hide the input fields and show the delete button for the new record
               tdInput1.style.display = 'none';
@@ -167,7 +168,7 @@ async function DataTable(config) {
               deleteButton.innerHTML = 'Видалити';
               tdButton.appendChild(deleteButton);
               tr.appendChild(tdButton);
-
+              
               deleteButton.addEventListener('click', async () => {
                 try {
                   const deleteResponse = await fetch(`${parentObj.api}/${responseData.id}`, {
@@ -183,6 +184,7 @@ async function DataTable(config) {
                   console.error(error);
                 }
               });
+
             } else {
               throw new Error('Post request failed');
             }
@@ -206,6 +208,7 @@ async function DataTable(config) {
     tr.appendChild(tdInput1);
     tr.appendChild(tdInput2);
     tr.appendChild(tdInput3);
+    
   }
 
   parentObj.table.appendChild(parentObj.tbody);
@@ -219,7 +222,7 @@ const config1 = {
     { title: 'Прізвище', value: 'surname' },
     { title: 'Вік', value: 'birthday' },
   ],
-  apiUrl: 'https://mock-api.shpp.me/mlv/users', // замініть nsurname на своє ім'я та прізвище
+  apiUrl: 'https://mock-api.shpp.me/nsurname/users', // замініть nsurname на своє ім'я та прізвище
 };
 
 DataTable(config1);
