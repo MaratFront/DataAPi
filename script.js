@@ -25,7 +25,8 @@ function DataTable(config) {
     table.appendChild(parentObj.get('thead'));
     parent.appendChild(table);
   }
-  async function getResponse() {
+  function getResponse() {
+    return async function(){
     const response = await fetch(parentObj.get('api'));
     const dataArray = await response.json();
     Object.entries(dataArray.data).reverse().map(([key,item], index) => {
@@ -52,7 +53,9 @@ function DataTable(config) {
     parentObj.get('parent').appendChild(parentObj.get('table'));
     postItems(dataArray.length + 1);
   }
-  getResponse();
+}
+  let newGetResponse=getResponse();
+  newGetResponse();
   async function deleteResponse(id, deleteRow) {
     const deleteTd = document.createElement('td');
     const deleteButton = document.createElement('button');
@@ -68,6 +71,7 @@ function DataTable(config) {
           updateRowNumbers();
         } else {
           throw new Error('Delete request failed');
+          
         }
       } catch (error) {
         console.error(error);
@@ -144,7 +148,8 @@ function DataTable(config) {
                   addRecordToTable(newRecord, tr);
                   deleteResponse(responseData.id, tr);
                   updateRowNumbers();
-                  getResponse();
+                  newGetResponse();
+                
                 } else {
                   throw new Error('Post request failed');
                 }
