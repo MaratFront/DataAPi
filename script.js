@@ -56,6 +56,7 @@ function DataTable(config) {
 }
   let newGetResponse=getResponse();
   newGetResponse();
+  let newGetResponse2=getResponse();
   async function deleteResponse(id, deleteRow) {
     const deleteTd = document.createElement('td');
     const deleteButton = document.createElement('button');
@@ -148,8 +149,15 @@ function DataTable(config) {
                   addRecordToTable(newRecord, tr);
                   deleteResponse(responseData.id, tr);
                   updateRowNumbers();
-                  newGetResponse();
-                
+                  newGetResponse2();
+                  const rows = parentObj.get('tbody').querySelectorAll('tr');
+                  rows.forEach((row) => {
+                    for(let i=0;i<row.length;i++){
+                      const tdIndex = row.children[i];
+                      tdIndex.remove();
+                    }
+                    row.remove();
+                  });
                 } else {
                   throw new Error('Post request failed');
                 }
@@ -186,6 +194,6 @@ const config1 = {
     { title: 'Прізвище', value: 'surname' },
     { title: 'Вік', value: 'birthday' },
   ],
-  apiUrl: 'https://mock-api.shpp.me/nsurname/users', // замініть nsurname на своє ім'я та прізвище
+  apiUrl: 'https://mock-api.shpp.me/mliv/users', // замініть nsurname на своє ім'я та прізвище
 };
 DataTable(config1);
