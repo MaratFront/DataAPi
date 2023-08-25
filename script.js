@@ -25,8 +25,7 @@ function DataTable(config) {
     table.appendChild(parentObj.get('thead'));
     parent.appendChild(table);
   }
-  function getResponse() {
-    return async function(){
+  async function getResponse() {
     const response = await fetch(parentObj.get('api'));
     const dataArray = await response.json();
     Object.entries(dataArray.data).reverse().map(([key,item], index) => {
@@ -52,11 +51,9 @@ function DataTable(config) {
     parentObj.get('table').appendChild(parentObj.get('tbody'));
     parentObj.get('parent').appendChild(parentObj.get('table'));
     postItems(dataArray.length + 1);
-  }
+  
 }
-  let newGetResponse=getResponse();
-  newGetResponse();
-  let newGetResponse2=getResponse();
+getResponse();
   async function deleteResponse(id, deleteRow) {
     const deleteTd = document.createElement('td');
     const deleteButton = document.createElement('button');
@@ -149,7 +146,7 @@ function DataTable(config) {
                   addRecordToTable(newRecord, tr);
                   deleteResponse(responseData.id, tr);
                   updateRowNumbers();
-                  newGetResponse2();
+                  getResponse();
                   const rows = parentObj.get('tbody').querySelectorAll('tr');
                   rows.forEach((row) => {
                     for(let i=0;i<row.length;i++){
@@ -194,6 +191,6 @@ const config1 = {
     { title: 'Прізвище', value: 'surname' },
     { title: 'Вік', value: 'birthday' },
   ],
-  apiUrl: 'https://mock-api.shpp.me/mliv/users', // замініть nsurname на своє ім'я та прізвище
+  apiUrl: 'https://mock-api.shpp.me/nsurname/users',
 };
 DataTable(config1);
